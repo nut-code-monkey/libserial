@@ -99,7 +99,7 @@ extern "C++"
              */
             explicit SerialStream( const std::string fileName, 
                                    std::ios_base::openmode openMode =
-                                   std::ios::in|std::ios::out) ;
+                                   std::ios::in|std::ios::out);
 
             /**
              * @brief Constructor that allows one to create a SerialStream
@@ -130,14 +130,14 @@ extern "C++"
              *        The Open() method will need to be called explicitly on
              *        the object to communicate with the serial port.
              */
-            explicit SerialStream() ;
+            explicit SerialStream();
       
             /**
              * @brief Default Destructor. Closes the stream associated with
              *        mFileDescriptor. Remaining actions are accomplished by
              *        the fstream destructor.
              */
-            virtual ~SerialStream() ; 
+            virtual ~SerialStream(); 
 
             /* -----------------------------------------------------------------
              * Other Public Methods
@@ -302,7 +302,7 @@ extern "C++"
              * @brief The SerialStreamBuffer object that will be used by the
              *        stream to communicate with the serial port.
              */
-            SerialStreamBuf *mIOBuffer ;
+            SerialStreamBuf *mIOBuffer;
 
             /**----------------------------------------------------------------
              * Private Methods
@@ -329,7 +329,7 @@ extern "C++"
              */
             // void EnableReceiver(bool enable=true);
 
-        } ; // class SerialStream
+        }; // class SerialStream
 
     } // namespace LibSerial
 

@@ -186,7 +186,7 @@ BaudRate SerialStream::GetBaudRate()
 void SerialStream::SetCharSize(const CharSize charSize) 
 {
     SerialStreamBuf* my_buffer = 
-        dynamic_cast<SerialStreamBuf *>(this->rdbuf()) ;
+        dynamic_cast<SerialStreamBuf *>(this->rdbuf());
 
     // Make sure that we are dealing with a SerialStreamBuf before
     // proceeding. This check also makes sure that we have a non-NULL
@@ -264,7 +264,7 @@ void SerialStream::SetNumOfStopBits(const short stop_bits)
         // problem and we should stop all I/O using this stream.
         setstate(badbit);
     }
-    return ;
+    return;
 }
 
 short SerialStream::GetNumOfStopBits()

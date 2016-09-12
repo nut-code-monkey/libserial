@@ -119,7 +119,7 @@ namespace LibSerial
         int InitializeSerialPort();
 
         int SetParametersToDefault();
-    } ;
+    };
 
     SerialStreamBuf::SerialStreamBuf()
         : mImpl(new Implementation)
@@ -353,7 +353,7 @@ namespace LibSerial
     short 
     SerialStreamBuf::GetVTime() const 
     {
-        return mImpl->GetVTime() ;
+        return mImpl->GetVTime();
     }
 
     streamsize
@@ -444,7 +444,7 @@ namespace LibSerial
             SetBaudRate(SerialStreamBuf::DEFAULT_BAUD) ) 
         {
             return -1;
-        } ;
+        };
 
         // Character size. 
         if ( CharSize::CHAR_SIZE_INVALID == SetCharSize(DEFAULT_CHAR_SIZE) )
@@ -566,7 +566,7 @@ namespace LibSerial
             //
             // Get the current terminal settings. 
             //
-            struct termios term_setting ;
+            struct termios term_setting;
             if ( -1 == tcgetattr(mFileDescriptor, &term_setting) )
             {
                 return BaudRate::BAUD_INVALID;
@@ -674,7 +674,7 @@ namespace LibSerial
         // The code should never reach here due to the fact that the default
         // section of the above switch statement returns. So we force an
         // abort here using an assertion which will always fail.
-        assert( false ) ;
+        assert( false );
         return BaudRate::BAUD_INVALID;
     }
 
@@ -961,8 +961,8 @@ namespace LibSerial
         {
             tset.c_iflag |= IXON|IXOFF;
             tset.c_cflag &= ~CRTSCTS;
-            tset.c_cc[VSTART] = CTRL_Q ; // 0x11 (021) ^q
-            tset.c_cc[VSTOP]  = CTRL_S ; // 0x13 (023) ^s
+            tset.c_cc[VSTART] = CTRL_Q; // 0x11 (021) ^q
+            tset.c_cc[VSTOP]  = CTRL_S; // 0x13 (023) ^s
         }
         else
         {
@@ -1044,7 +1044,7 @@ namespace LibSerial
         }
 
         // Get the current terminal settings. 
-        struct termios term_setting ;
+        struct termios term_setting;
 
         if ( -1 == tcgetattr(mFileDescriptor, &term_setting) )
         {
@@ -1098,7 +1098,7 @@ namespace LibSerial
         //
         // Get the current terminal settings. 
         //
-        struct termios term_setting ;
+        struct termios term_setting;
 
         if ( -1 == tcgetattr(mFileDescriptor, &term_setting) )
         {
@@ -1308,7 +1308,7 @@ namespace LibSerial
         else
         {
             // Otherwise we write the character to the serial port. 
-            char out_ch = traits_type::to_char_type(c) ;
+            char out_ch = traits_type::to_char_type(c);
             ssize_t retval = write(mFileDescriptor, &out_ch, 1);
 
             // If the write failed then return eof. 

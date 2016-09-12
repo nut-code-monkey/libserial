@@ -290,7 +290,7 @@ protected:
 
     //----------------------- Serial Port Unit Tests ------------------------//
 
-    void testSerialPortReadAndWrite()
+        void testSerialPortReadAndWrite()
     {
         serialPort.Open();
         serialPort2.Open();
@@ -308,8 +308,9 @@ protected:
         }
 
         serialPort.Write(writeDataBuffer);
-        serialPort2.Read(readDataBuffer, 74, 1);
+        bytesRead = serialPort2.Read(readDataBuffer, 74, 1);
         ASSERT_EQ(readDataBuffer, writeDataBuffer);
+        ASSERT_EQ(bytesRead, writeDataBuffer.size());
 
         serialPort.Close();
         serialPort2.Close();
@@ -323,9 +324,13 @@ protected:
         ASSERT_TRUE(serialPort.IsOpen());
         ASSERT_TRUE(serialPort2.IsOpen());
 
-        serialPort.WriteByte((unsigned char)writeByte);
-        readByte = (char)serialPort2.ReadByte(1);
+        unsigned char writeByte;
+        unsigned char readByte;
+        
+        serialPort.WriteByte(writeByte);
+        bytesRead = serialPort2.ReadByte(readByte, 1);
         ASSERT_EQ(readByte, writeByte);
+        ASSERT_EQ(bytesRead, 1);
         
         serialPort.Close();
         serialPort2.Close();
@@ -340,8 +345,9 @@ protected:
         ASSERT_TRUE(serialPort2.IsOpen());
         
         serialPort.Write(writeString + '\n');
-        readString = serialPort2.ReadLine(1);
+        bytesRead = serialPort2.ReadLine(readString, 15, '\n');
         ASSERT_EQ(readString, writeString + '\n');
+        ASSERT_EQ(bytesRead, writeString.size() + 1);
         
         serialPort.Close();
         serialPort2.Close();
@@ -360,11 +366,16 @@ protected:
 
         ASSERT_FALSE(serialPort.IsDataAvailable());
 
-        serialPort.WriteByte((unsigned char)writeByte);
+        unsigned char writeByte;
+        unsigned char readByte;
+
+        writeByte = 'A';
+
+        serialPort.WriteByte(writeByte);
         usleep(1); // @TODO - This should be replaced to a call to tcdrain();
         ASSERT_TRUE(serialPort2.IsDataAvailable());
 
-        readByte = (char)serialPort2.ReadByte(1);
+        bytesRead = serialPort2.ReadByte(readByte, 1);
         ASSERT_FALSE(serialPort2.IsDataAvailable());
 
         serialPort.Close();
@@ -548,6 +559,8 @@ protected:
 
     char writeByte;
     char readByte;
+
+    int bytesRead = 0;
 };
 
 

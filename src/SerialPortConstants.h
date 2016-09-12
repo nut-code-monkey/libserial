@@ -52,7 +52,7 @@ namespace LibSerial
 #endif
         BAUD_DEFAULT = BAUD_57600,
         BAUD_INVALID = std::numeric_limits<speed_t>::max()
-    } ;
+    };
 
     /**
      * The allowed values of character sizes that can be used during
@@ -66,7 +66,7 @@ namespace LibSerial
         CHAR_SIZE_8 = CS8,
         CHAR_SIZE_DEFAULT = CS8,
         CHAR_SIZE_INVALID = std::numeric_limits<tcflag_t>::max()
-    } ;
+    };
 
 
 } /* LibSerial */ 

@@ -25,7 +25,7 @@
 /**
  * @brief Forward declarations.
  */
-class PosixSignalHandler ;
+class PosixSignalHandler;
 
 
 /**
@@ -45,7 +45,7 @@ public:
      *        class per process. This instance can be obtained using the
      *        GetInstance() method.
      */
-    static PosixSignalDispatcher& Instance() ;
+    static PosixSignalDispatcher& Instance();
 
     /**
      * @brief Exception thrown when AttachHandler() fails due to a runtime
@@ -56,7 +56,7 @@ public:
     public:
         CannotAttachHandler( const std::string& whatArg ) :
             runtime_error(whatArg) { }
-    } ;
+    };
 
     /**
      * @brief Exception thrown when DetachHandler() fails due to a runtime
@@ -67,7 +67,7 @@ public:
     public:
         CannotDetachHandler( const std::string& whatArg ) :
             runtime_error(whatArg) { }
-    } ;
+    };
 
     /**
      * @brief Attaches a signal handler to the signal dispatcher. The signal
@@ -92,7 +92,7 @@ public:
      */
     void AttachHandler( const int           posixSignalNumber,
                         PosixSignalHandler& signalHandler )
-        throw( CannotAttachHandler ) ;
+        throw( CannotAttachHandler );
 
     /**
      * @brief Detach the specified signal handler from the signal dispatcher.
@@ -111,7 +111,7 @@ public:
     void DetachHandler( const int                 posixSignalNumber,
                         const PosixSignalHandler& signalHandler )
         throw( CannotDetachHandler,
-               std::logic_error ) ;
+               std::logic_error );
 private:
     /**
      * @brief This is a singleton class and the only instances of this class
@@ -119,20 +119,20 @@ private:
      *        enforced by making the default constructor a private member
      *        disalloweing construction of new instances of this class
      */
-    PosixSignalDispatcher() ;
+    PosixSignalDispatcher();
 
     /**
      * @brief This class cannot be subclassed. We enforce this by making
      *        the destructor a private member.
      */
-    ~PosixSignalDispatcher() ;
+    ~PosixSignalDispatcher();
 
     /**
      * @brief Copying of an instance of this class is not allowed.
      *        We enforce this by making the copy constructor and the
      *        assignment operator private members.
      */
-    PosixSignalDispatcher( const PosixSignalDispatcher& otherInstance ) ;
+    PosixSignalDispatcher( const PosixSignalDispatcher& otherInstance );
 
     /**
      * @brief Copying of an instance of this class is not allowed.
@@ -140,7 +140,7 @@ private:
      *        assignment operator private members.
      */
     const PosixSignalDispatcher&
-    operator=( const PosixSignalDispatcher& otherInstance ) ;
-} ;
+    operator=( const PosixSignalDispatcher& otherInstance );
+};
 
 #endif

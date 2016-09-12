@@ -58,7 +58,7 @@ namespace LibSerial
         /**
          * @brief Type used to receive and return raw data to/from methods.
          */
-        using DataBuffer = std::vector<uint8_t> ;
+        using DataBuffer = std::vector<uint8_t>;
 
         /**
          * @brief The allowed set of baud rates.
@@ -297,17 +297,6 @@ namespace LibSerial
         bool IsDataAvailable() const;
 
         /**
-         * @brief Reads a single byte from the serial port.
-         *        If no data is available within the specified number
-         *        of milliseconds (msTimeout), then this method will
-         *        throw a ReadTimeout exception. If msTimeout is 0,
-         *        then this method will block until data is available.
-         * @param msTimeout The timeout period in milliseconds.
-         * @return Returns the byte read.
-         */
-        uint8_t ReadByte(const unsigned int msTimeout = 0);
-
-        /**
          * @brief Reads the specified number of bytes from the serial port.
          *        The method will timeout if no data is received in the specified
          *        number of milliseconds (msTimeout). If msTimeout is 0, then
@@ -319,10 +308,23 @@ namespace LibSerial
          * @param dataBuffer The data buffer to place serial data into.
          * @param numOfBytes The number of bytes to read before returning.
          * @param msTimeout The timeout period in milliseconds.
+         * @return Returns the number of bytes read.
          */
-        void Read(DataBuffer& dataBuffer,
-                  const unsigned int numOfBytes = 0,
-                  const unsigned int msTimeout  = 0);
+        int Read(DataBuffer&        dataBuffer,
+                 const unsigned int numOfBytes = 0,
+                 const unsigned int msTimeout  = 0);
+
+        /**
+         * @brief Reads a single byte from the serial port.
+         *        If no data is available within the specified number
+         *        of milliseconds (msTimeout), then this method will
+         *        throw a ReadTimeout exception. If msTimeout is 0,
+         *        then this method will block until data is available.
+         * @param msTimeout The timeout period in milliseconds.
+         * @return Returns the number of bytes read.
+         */
+        int ReadByte(unsigned char&     charBuffer,
+                     const unsigned int msTimeout = 0);
 
         /**
          * @brief Reads a line of characters from the serial port.
@@ -332,15 +334,16 @@ namespace LibSerial
          *        If a line terminator is read, a string will be returned,
          *        however, if the timeout is reached, an exception will be thrown
          *        and all previously read data will be lost.
+         * @param dataString The data string read from the serial port.
          * @param msTimeout The timeout value to return if a line termination
          *        character is not read.
          * @param lineTerminator The line termination character to specify the
          *        end of a line.
-         * @return Returns the line read from the serial port ending along with the
-         *         line termination character iff sucessful.
+         * @return Returns the number of bytes read.
          */
-        std::string ReadLine(const unsigned int msTimeout = 0,
-                             const char lineTerminator = '\n');
+        int ReadLine(std::string&       dataString,
+                     const unsigned int msTimeout = 0,
+                     const char         lineTerminator = '\n');
 
         /**
          * @brief Writes a single byte to the serial port.
@@ -405,35 +408,35 @@ namespace LibSerial
          * @brief Prevents copying of objects of this class by declaring the copy
          *        constructor private. This method is never defined.
          */
-        SerialPort(const SerialPort& otherSerialPort) = delete ;
+        SerialPort(const SerialPort& otherSerialPort) = delete;
 
         /**
          * @brief Move construction is disallowed.
          */
-        SerialPort(const SerialPort&& otherSerialPort) = delete ;
+        SerialPort(const SerialPort&& otherSerialPort) = delete;
 
         /**
          * @brief Prevents copying of objects of this class by declaring the
          *        assignment operator private. This method is never defined.
          */
-        SerialPort& operator=(const SerialPort& otherSerialPort ) = delete ;
+        SerialPort& operator=(const SerialPort& otherSerialPort ) = delete;
 
         /**
          * @brief Move assignment is not allowed.
          */
-        SerialPort& operator=(const SerialPort&& otherSerialPort ) = delete ;
+        SerialPort& operator=(const SerialPort&& otherSerialPort ) = delete;
 
         /**
          * @brief Forward declaration of the implementation class folowing
          *        the PImpl idiom.
          */
-        class Implementation ;
+        class Implementation;
 
         /**
          * @brief Pointer to implementation class instance.
          */
-        std::unique_ptr<Implementation> mImpl ;
-    } ;
+        std::unique_ptr<Implementation> mImpl;
+    };
 }
 
 #endif // #ifndef _SerialPort_h_

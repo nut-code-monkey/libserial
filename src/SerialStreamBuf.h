@@ -153,7 +153,7 @@ namespace LibSerial
          *        (returned a non-null value) and there has been no
          *        intervening call to close.
          */
-        bool is_open() const ;
+        bool is_open() const;
 
         /**
          * @brief If is_open() != <tt>false</tt>, returns a null
@@ -203,7 +203,7 @@ namespace LibSerial
          */
         SerialStreamBuf* open( const std::string filename,
                                std::ios_base::openmode mode =
-                               std::ios_base::in | std::ios_base::out ) ;
+                               std::ios_base::in | std::ios_base::out );
 
         /**
          * @brief If is_open() == false, returns a null pointer.
@@ -380,7 +380,7 @@ namespace LibSerial
          *         serial port. 
          */
         virtual std::streamsize xsgetn( char_type*      s, 
-                                        std::streamsize n ) override ;
+                                        std::streamsize n ) override;
 
         /**
          * @brief Writes upto n characters from the character sequence at 
@@ -455,7 +455,7 @@ namespace LibSerial
     private:
         class Implementation;
         std::unique_ptr<Implementation> mImpl;
-    } ; // class SerialStreamBuf
+    }; // class SerialStreamBuf
 } // namespace LibSerial
 
 #endif // #ifndef _SerialStreamBuf_h_

@@ -9,7 +9,7 @@
 #include <string>
 #include <unistd.h>
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include <SerialPort.h>
 #include <SerialStream.h>
 

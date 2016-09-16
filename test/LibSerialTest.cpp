@@ -239,6 +239,7 @@ protected:
             serialStream.SetCharSize(serialStreamCharSize[i]);
             CharSize charSize = serialStream.GetCharSize();
             ASSERT_EQ(charSize, serialStreamCharSize[i]);
+            usleep(10);
         }
 
         serialStream.Close();
@@ -255,6 +256,7 @@ protected:
             serialStream.SetParity(serialStreamParity[i]);
             SerialStreamBuf::ParityEnum parity = serialStream.GetParity();
             ASSERT_EQ(parity, serialStreamParity[i]);
+            usleep(10);
         }
 
         serialStream.Close();
@@ -271,6 +273,7 @@ protected:
             serialStream.SetFlowControl(serialStreamFlowControl[i]);
             SerialStreamBuf::FlowControlEnum flowControl = serialStream.GetFlowControl();
             ASSERT_EQ(flowControl, serialStreamFlowControl[i]);
+            usleep(10);
         }
 
         serialStream.Close();
@@ -322,6 +325,7 @@ protected:
             bytesRead = serialPort2.Read(readDataBuffer, 74, 1);
             ASSERT_EQ(readDataBuffer, writeDataBuffer);
             ASSERT_EQ(bytesRead, writeDataBuffer.size());
+            usleep(10);
         }
 
         serialPort.Close();
@@ -345,6 +349,7 @@ protected:
             bytesRead = serialPort2.ReadByte(readByte, 1);
             ASSERT_EQ(readByte, writeByte);
             ASSERT_EQ(bytesRead, 1);
+            usleep(10);
         }
         
         serialPort.Close();
@@ -365,6 +370,7 @@ protected:
             bytesRead = serialPort2.ReadLine(readString, 15, '\n');
             ASSERT_EQ(readString, writeString + '\n');
             ASSERT_EQ(bytesRead, writeString.size() + 1);
+            usleep(10);
         }
         
         serialPort.Close();

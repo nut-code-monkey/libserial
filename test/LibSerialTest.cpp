@@ -135,7 +135,7 @@ protected:
         ASSERT_FALSE(serialStream.IsOpen());
     }
 
-    void testSerialStreamReadAndWrite()
+    void testSerialStreamReadWrite()
     {
         serialStream.Open(TEST_SERIAL_PORT);
         serialStream2.Open(TEST_SERIAL_PORT_2);
@@ -143,12 +143,9 @@ protected:
         ASSERT_TRUE(serialStream.IsOpen());
         ASSERT_TRUE(serialStream2.IsOpen());
 
-        for (size_t i = 0; i < 1000; i++)
-        {
-            serialStream << writeString << std::endl;
-            getline(serialStream2, readString);
-            ASSERT_EQ(readString, writeString);
-        }
+        serialStream << writeString << std::endl;
+        getline(serialStream2, readString);
+        ASSERT_EQ(readString, writeString);
 
         serialStream.Close();
         serialStream2.Close();
@@ -163,14 +160,11 @@ protected:
         ASSERT_TRUE(serialStream.IsOpen());
         ASSERT_TRUE(serialStream2.IsOpen());        
 
-        for (size_t i = 0; i < 1000; i++)
-        {
-            writeByte = 'a';
-            serialStream.write(&writeByte, 1);
-            serialStream << writeByte << std::endl;
-            serialStream2.read(&readByte, 1);
-            ASSERT_EQ(readByte, writeByte);
-        }
+        writeByte = 'a';
+        serialStream.write(&writeByte, 1);
+        serialStream << writeByte << std::endl;
+        serialStream2.read(&readByte, 1);
+        ASSERT_EQ(readByte, writeByte);
 
         serialStream.Close();
         serialStream2.Close();
@@ -185,14 +179,11 @@ protected:
         ASSERT_TRUE(serialStream.IsOpen());
         ASSERT_TRUE(serialStream2.IsOpen());        
 
-        for (size_t i = 0; i < 1000; i++)
-        {
-            writeByte = 'A';
-            serialStream.write(&writeByte, 1);
-            serialStream << writeByte << std::endl;
-            serialStream2.get(readByte);
-            ASSERT_EQ(readByte, writeByte);
-        }
+        writeByte = 'A';
+        serialStream.write(&writeByte, 1);
+        serialStream << writeByte << std::endl;
+        serialStream2.get(readByte);
+        ASSERT_EQ(readByte, writeByte);
 
         serialStream.Close();
         serialStream2.Close();
@@ -302,7 +293,17 @@ protected:
 
     //----------------------- Serial Port Unit Tests ------------------------//
 
-        void testSerialPortReadAndWrite()
+
+    void testSerialPortOpenClose()
+    {
+        serialPort.Open();
+        ASSERT_TRUE(serialPort.IsOpen());
+
+        serialPort.Close();
+        ASSERT_FALSE(serialPort.IsOpen());
+    }
+
+    void testSerialPortReadWrite(const int timeOutMilliseconds)
     {
         serialPort.Open();
         serialPort2.Open();
@@ -319,14 +320,11 @@ protected:
             writeDataBuffer.push_back(i);
         }
 
-        for (size_t i = 0; i < 1000; i++)
-        {
-            serialPort.Write(writeDataBuffer);
-            bytesRead = serialPort2.Read(readDataBuffer, 74, 1);
-            ASSERT_EQ(readDataBuffer, writeDataBuffer);
-            ASSERT_EQ(bytesRead, writeDataBuffer.size());
-            usleep(10);
-        }
+        serialPort.Write(writeDataBuffer);
+        bytesRead = serialPort2.Read(readDataBuffer, 74, timeOutMilliseconds);
+        ASSERT_EQ(readDataBuffer, writeDataBuffer);
+        ASSERT_EQ(bytesRead, writeDataBuffer.size());
+        usleep(10);
 
         serialPort.Close();
         serialPort2.Close();
@@ -343,14 +341,11 @@ protected:
         unsigned char writeByte;
         unsigned char readByte;
         
-        for (size_t i = 0; i < 1000; i++)
-        {
-            serialPort.WriteByte(writeByte);
-            bytesRead = serialPort2.ReadByte(readByte, 1);
-            ASSERT_EQ(readByte, writeByte);
-            ASSERT_EQ(bytesRead, 1);
-            usleep(10);
-        }
+        serialPort.WriteByte(writeByte);
+        bytesRead = serialPort2.ReadByte(readByte, timeOutMilliseconds);
+        ASSERT_EQ(readByte, writeByte);
+        ASSERT_EQ(bytesRead, 1);
+        usleep(10);
         
         serialPort.Close();
         serialPort2.Close();
@@ -363,15 +358,12 @@ protected:
         
         ASSERT_TRUE(serialPort.IsOpen());
         ASSERT_TRUE(serialPort2.IsOpen());
-        
-        for (size_t i = 0; i < 1000; i++)
-        {
-            serialPort.Write(writeString + '\n');
-            bytesRead = serialPort2.ReadLine(readString, 15, '\n');
-            ASSERT_EQ(readString, writeString + '\n');
-            ASSERT_EQ(bytesRead, writeString.size() + 1);
-            usleep(10);
-        }
+
+        serialPort.Write(writeString + '\n');
+        bytesRead = serialPort2.ReadLine(readString, timeOutMilliseconds, '\n');
+        ASSERT_EQ(readString, writeString + '\n');
+        ASSERT_EQ(bytesRead, writeString.size() + 1);
+        usleep(10);
         
         serialPort.Close();
         serialPort2.Close();
@@ -597,10 +589,14 @@ TEST_F(LibSerialTest, testSerialStreamOpenClose)
     testSerialStreamOpenClose();
 }
 
-TEST_F(LibSerialTest, testSerialStreamReadAndWrite)
+TEST_F(LibSerialTest, testSerialStreamReadWrite)
 {
     SCOPED_TRACE("Serial Stream Read and Write Test");
-    testSerialStreamReadAndWrite();
+    
+    for (size_t i = 0; i < 1000; i++)
+    {
+        testSerialStreamReadWrite();
+    }
 }
 
 TEST_F(LibSerialTest, testSerialStreamSetGetBaudRate)
@@ -637,10 +633,22 @@ TEST_F(LibSerialTest, testSerialStreamSetGetStopBits)
 
 //------------------------- Serial Port Unit Tests --------------------------//
 
-TEST_F(LibSerialTest, testSerialPortReadAndWrite)
+TEST_F(LibSerialTest, testSerialPortOpenClose)
 {
+    SCOPED_TRACE("Serial Port Open and Close Test");
+    testSerialPortOpenClose();
+}
+
+TEST_F(LibSerialTest, testSerialPortReadWrite)
+{
+    int timeOutMilliseconds = 25;
+
     SCOPED_TRACE("Serial Port Read and Write Test");
-    testSerialPortReadAndWrite();
+
+    for (size_t i = 0; i < 1000; i++)
+    {
+        testSerialPortReadWrite(timeOutMilliseconds);
+    }
 }
 
 TEST_F(LibSerialTest, testSerialPortIsDataAvailableTest)

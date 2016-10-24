@@ -199,6 +199,7 @@ protected:
 
         size_t maxBaudIndex = 17;
         
+        // // @TODO - Why don't the higher baud rates work?
         // #ifdef __linux__
         //     maxBaudIndex = 26;
             
@@ -292,7 +293,6 @@ protected:
 
 
     //----------------------- Serial Port Unit Tests ------------------------//
-
 
     void testSerialPortOpenClose()
     {
@@ -408,15 +408,15 @@ protected:
 
         size_t maxBaudIndex = 17;
         
-        // @TODO - Why don't higher baud rates work in Linux?
-        // #ifdef __linux__
-        //     maxBaudIndex = 26;
+        #ifdef __linux__
+            maxBaudIndex = 26;
             
-        //     #if __MAX_BAUD > B2000000
-        //         maxBaudIndex = 30;
-        //     #endif
+            // // @TODO - Why don't higher baud rates work?
+            // #if __MAX_BAUD > B2000000
+            //     maxBaudIndex = 30;
+            // #endif
         
-        // #endif
+        #endif
 
         for (size_t i = 0; i < maxBaudIndex; i++)
         {
@@ -434,7 +434,7 @@ protected:
         serialPort.Open();
         ASSERT_TRUE(serialPort.IsOpen());
 
-        // @TODO - Why don't the smaller CharSize values work in Linux?
+        // @TODO - Why don't the smaller CharSize values work?
         for (size_t i = 2; i < 4; i++)
         {
             serialPort.SetCharSize(serialPortCharacterSize[i]);
@@ -467,7 +467,7 @@ protected:
         serialPort.Open();
         ASSERT_TRUE(serialPort.IsOpen());
 
-        // @TODO - FLOW_CONTROL_SOFT flow control is not valid in Linux.
+        // @TODO - FLOW_CONTROL_SOFT flow control aparrently is not valid.
         for (size_t i = 0; i < 2; i++)
         {
             serialPort.SetFlowControl(serialPortFlowControl[i]);
@@ -636,7 +636,11 @@ TEST_F(LibSerialTest, testSerialStreamSetGetStopBits)
 TEST_F(LibSerialTest, testSerialPortOpenClose)
 {
     SCOPED_TRACE("Serial Port Open and Close Test");
-    testSerialPortOpenClose();
+
+    for (size_t i = 0; i < 100; i++)
+    {
+        testSerialPortOpenClose();
+    }
 }
 
 TEST_F(LibSerialTest, testSerialPortReadWrite)
